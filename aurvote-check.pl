@@ -29,7 +29,6 @@ print color $colors{"Info"};
 print "Getting list of foreign (AUR) packages...\n";
 print color 'reset';
 my $packages = `pacman -Qm`;
-#my $packages = "asd 1.0\ndropbox 4.0\ngnome-activity-journal 1.0\n";
 $packages =~ s/(.*) (.*)\n/$1 $2;/g;
 my %version = split(/[ ;]/, $packages);
 my %votes = ();
