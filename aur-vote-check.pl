@@ -3,6 +3,7 @@
 use warnings;
 use strict;
 
+use Term::ReadLine;
 use Term::ANSIColor;
 
 # ====================================== #
@@ -19,9 +20,11 @@ my %colors = (
     "NotVoted" => 'red',
     "NotAUR" => 'magenta',
     "Changing" => 'bold white',
+    "Arrow" => 'bold yellow',
 );
 
 # ====================================== #
+
 
 
 ## Retrieve package list
@@ -34,12 +37,10 @@ my %version = split(/[ ;]/, $packages);
 my %votes = ();
 my @packages = sort keys %version;
 
-
-
 ## List and check vote state for packages
 my $i = 1;
 print color $colors{"Info"};
-print "Checking vote state for packages:\n\n";
+print "Checking vote state for packages, please wait.\n\n";
 print color 'reset';
 foreach my $package (@packages) {
 
@@ -90,10 +91,13 @@ print color $colors{Info};
 print "\nWhich packages do you want to change the vote of? ";
 print color 'reset';
 
-## Change the votes
-chomp(my $list = <>);
+## Read the list of packages
+my $term = Term::ReadLine->new('aurvote-check');
+my $list = $term->readline('> ');
 $list =~ s/[^0-9\s-]//g;
 print "\n";
+
+## Change the votes
 if ($list) {
     my @pkgs = split(' ', $list);
     for my $pkgNum (@pkgs) {
@@ -102,6 +106,10 @@ if ($list) {
         # Check if number is valid and package is from AUR 
         next if ($pkgNum < 0 or $pkgNum >= @packages);
         if ($votes{$packages[$pkgNum]} =~ /AUR/) {
+            print color $colors{Arrow};
+            print "==> ";
+            print color 'reset';
+        
             print color $colors{Changing};
             print "Skipping ";
             print color 'reset';
@@ -121,6 +129,10 @@ if ($list) {
             next;
         }
        
+        print color $colors{Arrow};
+        print "==> ";
+        print color 'reset';
+        
         print color $colors{Changing};
         print "Changing vote for ";
         print color 'reset';
@@ -148,10 +160,9 @@ if ($list) {
         }
 
         print color $colors{Changing};
-        print "...  ";
-        system("aurvote $newVote $packages[$pkgNum]");
-        print "[DONE]\n";
+        print "...  \n  ";
         print color 'reset';
+        system("aurvote $newVote $packages[$pkgNum]");
     }
 
     print "\n";

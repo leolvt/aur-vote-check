@@ -3,8 +3,6 @@ TODO List
 
 Some ideas:
 
-* Use Term::Readline for better input support.
-* Document the code better
+* Handle package ranges (e.g. 2-7)
 * Add --help option with usage
 * Add some command line options (vote all, unvote all, etc.)
-* Package the code (and add to AUR??)
