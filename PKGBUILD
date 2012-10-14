@@ -4,13 +4,13 @@ pkgver=20121014
 pkgrel=1
 pkgdesc="Simple and interactive wrapper to the aurvote tool."
 arch=('any')
-url="https://github.com/leolvt/AurvoteCheck"
+url="https://github.com/leolvt/aur-vote-check"
 license=('GPL')
 depends=('aurvote')
 makedepends=('git')
 
-_gitroot=git://github.com/leolvt/AurvoteCheck.git
-_gitname=AurvoteCheck
+_gitroot=git://github.com/leolvt/$pkgname.git
+_gitname=$pkgname
 
 build() {
     cd "$srcdir"
